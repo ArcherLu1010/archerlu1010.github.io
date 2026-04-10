@@ -1,0 +1,442 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <title>A simple stone game：解题思路 | ArcherLu</title>
+    <meta name="author" content="ArcherLu" />
+
+    <meta name="keywords" content="" />
+    <link rel="canonical" href="https://archerlu1010.github.io/2025/09/24/A%20simple%20stone%20game%EF%BC%9A%E8%A7%A3%E9%A2%98%E6%80%9D%E8%B7%AF/" />
+    <meta name="description" content="来源：2008 Asia Regional Beijing 虽然是一道上古ICPC题（2008 Asia Regional Beijing），但是我读完题解后大受震撼，觉得此题对于理解定义问题-挖掘性质之间的联系很有启发意义，于是整理了一下解题思路。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="A simple stone game：解题思路">
+<meta property="og:url" content="https://archerlu1010.github.io/2025/09/24/A%20simple%20stone%20game%EF%BC%9A%E8%A7%A3%E9%A2%98%E6%80%9D%E8%B7%AF/index.html">
+<meta property="og:site_name" content="ArcherLu">
+<meta property="og:description" content="来源：2008 Asia Regional Beijing 虽然是一道上古ICPC题（2008 Asia Regional Beijing），但是我读完题解后大受震撼，觉得此题对于理解定义问题-挖掘性质之间的联系很有启发意义，于是整理了一下解题思路。">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://archerlu1010.github.io/images/avatar.gif">
+<meta property="article:published_time" content="2025-09-23T16:00:00.000Z">
+<meta property="article:modified_time" content="2026-04-10T03:09:03.702Z">
+<meta property="article:author" content="ArcherLu">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://archerlu1010.github.io/images/avatar.gif">
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    />
+    <link rel="icon" href="/images/avatar.jpg" />
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/vue/3.4.38/vue.global.prod.min.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link
+    rel="stylesheet"
+    href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600;700&family=Lexend:wght@400;500;600;700;800;900&family=Noto+Sans+SC:wght@400;500;600;700;800;900&display=swap"
+/>
+<script> const mixins = {}; </script>
+
+<script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=default"></script>
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlightjs-line-numbers.js/2.8.0/highlightjs-line-numbers.min.js"></script>
+<link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github.min.css"
+/>
+<script src="/js/lib/highlight.js"></script>
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/contrib/auto-render.min.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css" />
+<script src="/js/lib/math.js"></script>
+
+
+<script src="/js/lib/preview.js"></script>
+
+
+
+
+
+
+
+
+
+
+<script src="/js/lib/stars.js"></script>
+
+<link rel="stylesheet" href="/css/main.css" />
+
+<meta name="generator" content="Hexo 8.1.1"></head>
+<body>
+    <div id="layout">
+        <transition name="fade">
+            <div id="loading" v-show="loading">
+                <div id="loading-circle">
+                    <h2>Loading...</h2>
+                    <p>少女祈祷中</p>
+                    <img src="/images/loading.gif" />
+                </div>
+            </div>
+        </transition>
+        <div id="menu" :class="{ hidden: hiddenMenu, 'menu-color': menuColor}">
+    <nav id="desktop-menu">
+        <a class="title" href="/">
+            <span>ARCHERLU</span>
+        </a>
+        
+        <a href="/">
+            <i class="fa-solid fa-house fa-fw"></i>
+            <span>&ensp;Home</span>
+        </a>
+        
+        <a href="/about">
+            <i class="fa-solid fa-id-card fa-fw"></i>
+            <span>&ensp;About</span>
+        </a>
+        
+        <a href="/archives">
+            <i class="fa-solid fa-box-archive fa-fw"></i>
+            <span>&ensp;Archives</span>
+        </a>
+        
+        <a href="/categories">
+            <i class="fa-solid fa-bookmark fa-fw"></i>
+            <span>&ensp;Categories</span>
+        </a>
+        
+        <a href="/tags">
+            <i class="fa-solid fa-tags fa-fw"></i>
+            <span>&ensp;Tags</span>
+        </a>
+        
+    </nav>
+    <nav id="mobile-menu">
+        <div class="title" @click="showMenuItems = !showMenuItems">
+            <i class="fa-solid fa-bars fa-fw"></i>
+            <span>&emsp;ARCHERLU</span>
+        </div>
+        <transition name="slide">
+            <div class="items" v-show="showMenuItems">
+                
+                <a href="/">
+                    <div class="item">
+                        <div style="min-width: 20px; max-width: 50px; width: 10%">
+                            <i class="fa-solid fa-house fa-fw"></i>
+                        </div>
+                        <div style="min-width: 100px; max-width: 150%; width: 20%">Home</div>
+                    </div>
+                </a>
+                
+                <a href="/about">
+                    <div class="item">
+                        <div style="min-width: 20px; max-width: 50px; width: 10%">
+                            <i class="fa-solid fa-id-card fa-fw"></i>
+                        </div>
+                        <div style="min-width: 100px; max-width: 150%; width: 20%">About</div>
+                    </div>
+                </a>
+                
+                <a href="/archives">
+                    <div class="item">
+                        <div style="min-width: 20px; max-width: 50px; width: 10%">
+                            <i class="fa-solid fa-box-archive fa-fw"></i>
+                        </div>
+                        <div style="min-width: 100px; max-width: 150%; width: 20%">Archives</div>
+                    </div>
+                </a>
+                
+                <a href="/categories">
+                    <div class="item">
+                        <div style="min-width: 20px; max-width: 50px; width: 10%">
+                            <i class="fa-solid fa-bookmark fa-fw"></i>
+                        </div>
+                        <div style="min-width: 100px; max-width: 150%; width: 20%">Categories</div>
+                    </div>
+                </a>
+                
+                <a href="/tags">
+                    <div class="item">
+                        <div style="min-width: 20px; max-width: 50px; width: 10%">
+                            <i class="fa-solid fa-tags fa-fw"></i>
+                        </div>
+                        <div style="min-width: 100px; max-width: 150%; width: 20%">Tags</div>
+                    </div>
+                </a>
+                
+            </div>
+        </transition>
+    </nav>
+</div>
+<transition name="fade">
+    <div id="menu-curtain" @click="showMenuItems = !showMenuItems" v-show="showMenuItems"></div>
+</transition>
+
+        <div id="main" :class="loading ? 'into-enter-from': 'into-enter-active'">
+            
+<div class="article" data-category="算法竞赛" style="--tx-post-bg:#fffdfa;--tx-post-text:#1e3e3f;--tx-cat-bg:#eef2f7;--tx-cat-text:#4f6370">
+    <div>
+        <h1>A simple stone game：解题思路</h1>
+    </div>
+    <div class="info">
+        <span class="date">
+            <span class="icon">
+                <i class="fa-solid fa-calendar fa-fw"></i>
+            </span>
+            2025/9/24
+        </span>
+        
+        
+        <span class="category">
+            <a href="/categories/%E7%AE%97%E6%B3%95%E7%AB%9E%E8%B5%9B/" style="color:#4f6370">
+                <span class="icon">
+                    <i class="fa-solid fa-bookmark fa-fw"></i>
+                </span>
+                算法竞赛
+            </a>
+        </span>
+        
+        
+    </div>
+    
+    <div class="content" v-pre>
+        <p>来源：<a target="_blank" rel="noopener" href="https://acm.hdu.edu.cn/search.php?field=problem&key=2008+Asia+Regional+Beijing&source=1&searchmode=source">2008 Asia Regional Beijing</a></p>
+<p>虽然是一道上古ICPC题（2008 Asia Regional Beijing），但是我读完题解后大受震撼，觉得此题对于理解定义问题-挖掘性质之间的联系很有启发意义，于是整理了一下解题思路。</p>
+<span id="more"></span>
+
+<blockquote>
+<p><strong>题目抽象</strong></p>
+<p>一堆石子两个人轮流取，每次至少要取走一个。先取的人第一次可以取任意多个，但是不能全部取完。之后每个人取石子时，能取的数目最多不能超过对手刚取的石子数的 $k$ 倍（$k$ 为给定常量）。取走最后一个石子的人算赢。</p>
+<p>在两人都以最优策略进行游戏时，先手要么必胜要么必负，必胜还是必负取决于一开始有多少个石子。本题就是告诉你开始的石子数目，你需要判断先手必胜还是先手必负，然后对先手必胜的情况，要算出先手一方第一次至少需要取多少个石子。</p>
+</blockquote>
+<p>本题中玩家每次能取石子不仅与当前剩余石子有关，还和上一玩家决策有关。</p>
+<p><strong>定义</strong> $w_{i,j}$ 为当前剩下 $i$ 个石子且对手取走 $j$ 个石子下所有可能局面集合中是否存在自己获胜局面，存在为 1，不存在为 0。</p>
+<p>$$w_{i,j} &#x3D; \begin{cases} 1 &amp; i \leq j \cdot k \cr 1 - \min\left\lbrace w_{i-c,c} \mid 1 \leq c \leq i \cdot k \right\rbrace &amp; i \gt j \cdot k \end{cases}$$</p>
+<p>但是此算法的时间复杂度是不可接受的。</p>
+<blockquote>
+<p>所以我们还需要挖掘出更多的性质，找到更优的算法。此时可以有三种推进解题过程的思路：</p>
+<ol>
+<li><p>针对动态规划算法进行优化，使 $O(n^2)$ 变成 $O(n\log n)$ 甚至 $O(n)$。</p>
+</li>
+<li><p>使用动态规划算法求解小规模数据，从小规模数据的解中尝试找出答案的规律。</p>
+</li>
+<li><p>对题目中的条件进行限制，然后解决这个限定后的问题，得到一些结论或性质，之后再尝试推广这些结论和性质，进而得到原问题的解。</p>
+</li>
+</ol>
+<p>思路 1 需要对动态规划算法的优化有较深的了解，并且也不一定能找到优化方法。思路 2 和思路 3 类似，都是通过解决小规模的、限定的子问题来逐步扩大找到原问题的解决方法。思路 2 为数据驱动，试图通过数值上的观察得到一些性质，然后再进一步证明这些性质。思路 3 则主要是手工推导。</p>
+<p>这里我们使用思路 3 来解决本题。</p>
+</blockquote>
+<p>我们先分析一下$k&#x3D;1$时的情形。</p>
+<table>
+<thead>
+<tr>
+<th>2</th>
+<th>3</th>
+<th>4</th>
+<th>5</th>
+<th>6</th>
+<th>7</th>
+<th>8</th>
+<th>9</th>
+<th>10</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>lose</td>
+<td>1</td>
+<td>lose</td>
+<td>1</td>
+<td>2</td>
+<td>1</td>
+<td>lose</td>
+<td>1</td>
+<td>2</td>
+</tr>
+</tbody></table>
+<p>必败场面似乎是 $2^n$，考虑和二进制的联系。经过尝试后，我们似乎找到一种必胜策略，即<strong>总是</strong>拿下二进制分解的最后一个 1（暂时记作 $\mathrm{lowbit}(x)$）。</p>
+<blockquote>
+<p>Note: 事实上，我们之后会得到比二进制和 $\mathrm{lowbit}$ 更为一般与本质的性质。</p>
+</blockquote>
+<p>令 $n_{\mathrm{cur}}$ 表示剩余石子，对手开始取时，$\mathrm{lowbit}(n_{\mathrm{cur}}) &#x3D; 2^p$，对手拿了 $x$ 个石头。</p>
+<p><strong>命题 1</strong> 设 $p,x$ 为正整数，$x \lt 2^p$。则 $\mathrm{lowbit}(2^p - x) \leq x$。</p>
+<p>这个命题是正确的，因为（反证法）如果 $\mathrm{lowbit}(2^p - x) \gt x$，那么 $(2^p - x) + x$ 就不能进位，合不出 $2^p$。</p>
+<blockquote>
+<p>Note：我们之后会再次使用反证法。</p>
+</blockquote>
+<p>我们现在分析一下$k&#x3D;2$时的情形。</p>
+<table>
+<thead>
+<tr>
+<th>2</th>
+<th>3</th>
+<th>4</th>
+<th>5</th>
+<th>6</th>
+<th>7</th>
+<th>8</th>
+<th>9</th>
+<th>10</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>lose</td>
+<td>lose</td>
+<td>1</td>
+<td>lose</td>
+<td>1</td>
+<td>2</td>
+<td>lose</td>
+<td>1</td>
+<td>2</td>
+</tr>
+</tbody></table>
+<p>在 $k&#x3D;1$ 时，二进制表示其实等价于分解成 $1,2,4,8,\ldots$ 这一数列中几个数的和。现在必败场面则是 Fibonacci 数列中的数。将 $n$ 分解成一系列 Fibonacci 数列中的数，这些分解出的数中的第一个便是答案。</p>
+<blockquote>
+<p>Note：事实上，我们之后会得到比 Fibonacci 数更为一般与本质的性质。</p>
+</blockquote>
+<p><strong>性质 1</strong> $n$ 是一个正整数，$n$ 可以分解成 Fibonacci 数中不相邻一些数的和。</p>
+<p>我们递推地考察数列前 $i$ 个数如何有序地组合出 $n$。</p>
+<table>
+<thead>
+<tr>
+<th>f</th>
+<th>n</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>$1$</td>
+<td>$1$</td>
+</tr>
+<tr>
+<td>$1,2$</td>
+<td>$1,2$</td>
+</tr>
+<tr>
+<td>$1,2,3$</td>
+<td>$1,2,3,1+3$</td>
+</tr>
+<tr>
+<td>$1,2,3,5$</td>
+<td>$1,2,3,1+3,5,1+5,2+5$</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>$f_1,f_2,\ldots,f_n$</td>
+<td>$n-1$ 时取法，$f_n$，以及 $f_n$ 与「$n-2$ 时取法」的组合</td>
+</tr>
+</tbody></table>
+<p>$f_n$ 可以覆盖 $1$ 至 $f_n - 1$，且其中的所有数都有唯一的分解。<br>对于任何 $n$，我们都能找到一个比 $n$ 大的 $f_m$。</p>
+<blockquote>
+<p><strong>性质 2</strong>：$k&#x3D;2$ 时，如果初始石子数 $n$ 不是 Fibonacci 数，则可以把 $n$ 分解为一些不相邻的 Fibonacci 数的和，在该分解方案里的最小的数，即是取石子数最少的获胜取法。</p>
+</blockquote>
+<p>设 $n$ 的分解为 $f_{i_1}, f_{i_2}, \ldots, f_{i_n}$。<br>拿走 $f_{i_1}$ 后，$2f_{i_1} \lt f_{i_2}$。再往后的每一回合，只需证明如下命题，即可证性质 2。</p>
+<p><strong>命题 2</strong> $f_p$ 是一个 Fibonacci 数，$x$ 是一个正整数，$f_y$ 是 $f_p - x$ 的 Fibonacci 分解中最小的一项，则 $f_y \lt 2x$。</p>
+<p>反证法证明：假设 $f_y \geq 2x$。<br>设 $x$ 分解为 ${f_{i_1}, f_{i_2}, \ldots, f_{i_n}}$，$2x$ 分解为 ${2f_{i_1}, 2f_{i_2}, \ldots, 2f_{i_n}}$，$f_p - x$ 分解为 ${f_{j_1}, f_{j_2}, \ldots, f_{j_m}}$。<br>根据假设有 $f_y \gt 2x \gt 2f_{i_n}$，因此 $f_y$ 和 $f_{i_n}$ 并不相邻。<br>于是 $(f_p - x) + x$ 便构成了一个新的分解：${f_{i_1}, f_{i_2}, \ldots, f_{i_n}, f_{j_1}, f_{j_2}, \ldots, f_{j_m}}$。<br>而 $f_p$ 本身也是一个 Fibonacci 数。出现矛盾，原命题得证。</p>
+<p>这样我们就证明了性质2。</p>
+<p>对于一般的 $k$：</p>
+<blockquote>
+<p>从对于 $k&#x3D;2$ 时的分析可以看出，”不相邻”并不是本质，$2f_{k_1} \lt f_{k_2}$ 才是分解出的数的关系的本质。性质 1 可以改写成如下的形式：</p>
+</blockquote>
+<p><strong>性质 1’</strong> $n$ 是一个正整数，$(a_n)$ 是一个单调增的正整数列。$n$ 可以分解成这个数列中不相邻一些数 $a_{k_1}, a_{k_2}, \ldots, a_{k_n}$ 的和，这些数满足 $2a_{k_i} \lt a_{k_{i+1}}$。</p>
+<p>假设我们现在还不知道数列 $(a_n)$ 是斐波那契数列，我们该怎么构造它呢？<br>设 $1 \sim r_i$ 为 $a_1 \sim a_i$ 能合并的取值范围。</p>
+<blockquote>
+<p>假如我们现在还不知道满足性质’ 的数列，怎样去构造这样的数列呢？</p>
+<p>假设这个数列是 ${a_n}$，显然有 $a_1&#x3D;1$（否则 1 不可能分解为数列中的数的和）。</p>
+<p>不妨设 $r_i$ 表示数列 ${a_n}$ 的前 $i$ 项所有合乎<strong>性质 1’</strong> 的分解方案中和的最大值。前 1 项只有一种分解方案 ${1}$，因此 $r_1&#x3D;1$。易知 $a_2&#x3D;2$，前 2 个数有两种取法 ${1},{2}$（由于 $2 \times 1 \lt 2$ 不成立，${1,2}$ 不满足要求），$r_2&#x3D;2$。</p>
+<p>对于 $a_3$，由于前 2 个数分解方案的和是从 1 到 $r_2$ 的，所以 $a_3$ 只能是 $r_2+1$（若 $a_3 \lt r_2+1$ 则 $a_3$ 存在两种分解方法，一种只取 $a_3$，一种只取 $a_1$ 和 $a_2$ 里的数。若 $a_3 \gt r_2+1$，则 $r_2+1$ 无法用数列里的数的和表示），即 $a_3 &#x3D; r_2+1 &#x3D; 3$，由于 $2 \times 1 \lt 3$，所以 1 和 3 可以同时取，前 3 个数中合理的分解方法是 ${1},{2},{3},{1,3}$，于是有 $r_3&#x3D;4$。</p>
+<p>同样可以算出 $a_4&#x3D;5$，$r_4&#x3D;7$，$a_5&#x3D;8$，$r_5&#x3D;12$，……</p>
+<p>$a_n &#x3D; r_{n-1}+1$，而由于恰好 $2a_{n-2} \lt a_n$，前 $n$ 个数的可行分解方案有：</p>
+<p>《前 $n-1$ 个数的所有分解方案》，${a_n}$，以及所有形如 ${a_n + S}$ 的集合（其中 $S$ 取遍《前 $n-2$ 个数的所有分解方案》中各方案对应的项之和所构成的集合）。比如前 3 个数的分解方案是 ${1},{2},{3},{1,3}$；前 4 个数的分解方案是：${1},{2},{3},{1,3},{5},{5,1},{5,2}$；前 5 个数的分解方案是：${1},{2},{3},{1,3},{5},{5,1},{5,2},{a_5},{a_5,1},{a_5,2},{a_5,3},{a_5,1,3}$，据此可</p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>a</th>
+<th>r</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>1</td>
+<td>1</td>
+</tr>
+<tr>
+<td>1,2</td>
+<td>2</td>
+</tr>
+<tr>
+<td>1,2,3</td>
+<td>3+1</td>
+</tr>
+<tr>
+<td>+5</td>
+<td>+7</td>
+</tr>
+<tr>
+<td>+8</td>
+<td>+12</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>$r_{i-1}+1$</td>
+<td>$a_i+r_{i-2}&#x3D;r_{i-1}+r_{i-2}+1$</td>
+</tr>
+</tbody></table>
+<p><strong>命题 3</strong> …，$(a_n)$ 其实就是 Fibonacci 数列。<br>$$a_{n+1} &#x3D; r_n + 1 &#x3D; r_{n-1} + 1 + r_{n-2} + 1 &#x3D; a_n + a_{n-1}$$</p>
+<p>命题得证。</p>
+<p><em>由定义和构造的过程可知每个正整数存在唯一分解。</em></p>
+<blockquote>
+<p><strong>启示</strong><br>有时候，解决一个难题的关键不是硬算或套用已知技巧，而是<strong>重新审视和修改问题的定义</strong>，让原本复杂的关系变得更自然、更易于处理。<br>如果一个问题很难，试着思考“是否我用的定义让问题变复杂了？有没有等价的定义，但更贴合这个问题的结构？”（陶哲轩）</p>
+</blockquote>
+
+    </div>
+    
+    
+    
+    
+    
+    
+    
+</div>
+
+            <footer id="footer">
+    <div id="footer-wrap">
+        <div>
+            
+            &copy; 2026 Made by
+            <a target="_blank" rel="noopener" href="https://archerlu1010.github.io">ArcherLu</a>
+        </div>
+        <div>
+            Based on the <a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a>
+        </div>
+        
+    </div>
+</footer>
+
+        </div>
+        
+        <transition name="fade">
+            <div id="preview" ref="preview" v-show="previewShow">
+                <img id="preview-content" ref="previewContent" />
+            </div>
+        </transition>
+        
+    </div>
+    <script src="/js/main.js"></script>
+    
+    
+
+
+
+
+    
+</body>
+</html>

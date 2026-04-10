@@ -194,9 +194,8 @@
   justify-content: center;
   text-align: center;
 }
-#home-head #home-info .info .wrap h1,
-#home-head #home-info .info .wrap h3,
-#home-head #home-info .info .wrap h5 {
+/* 首页作者 / 站点主标题：纯白（避免在背景图上对比不足或被主题色覆盖） */
+#home-head #home-info .info .wrap h1 {
   color: #fff;
 }
 #home-head #home-info .loop:nth-child(1) {
